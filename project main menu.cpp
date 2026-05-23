@@ -1,50 +1,81 @@
+/*
+    ROCK PAPER SCISSORS - SEMESTER PROJECT
+    Part 1: Main Menu Only
+*/
+
 #include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
 
-void registerUser();
-void loginUser();
+/* ==========================================
+   FUNCTION PROTOTYPES
+   ========================================== */
 
-int main()
-{
+void clearScreen(void);
+void mainMenu(void);
+
+/* Add more prototypes here as we add modules:
+void login(void);
+void registerUser(void);
+void gameDashboard(void);
+void playGame(int mode);
+void showHistory(void);
+void showLeaderboard(void);
+void crudMenu(void);
+void saveDataToFile(void);
+void loadDataFromFile(void);
+*/
+
+/* ==========================================
+   MAIN MENU
+   ========================================== */
+
+void clearScreen(void) {
+    system("cls");
+}
+
+void mainMenu(void) {
     int choice;
+    
+    clearScreen();
+    printf("=================================\n");
+    printf("   ROCK PAPER SCISSORS - MAIN MENU\n");
+    printf("=================================\n");
+    printf("1. Login\n");
+    printf("2. Register\n");
+    printf("3. Exit\n");
+    printf("=================================\n");
+    printf("Enter choice: ");
 
-    while(1)
-    {
-        printf("\nROCK PAPER SCISSORS GAME\n");
+    scanf("%d", &choice);
+    getchar();
 
-        printf("\n1. Register");
-        printf("\n2. Login");
-        printf("\n3. Exit");
-
-        printf("\nEnter your choice: ");
-        scanf("%d", &choice);
-
-        switch(choice)
-        {
-            case 1:
-                registerUser();
-                break;
-
-            case 2:
-                loginUser();
-                break;
-
-            case 3:
-                printf("Exiting Program...\n");
-                return 0;
-
-            default:
-                printf("Invalid choice!\n");
-        }
+    if (choice == 1) {
+        /* TODO: Add login() */
+        printf("\n[Login module - coming soon]");
+        getch();
+    } else if (choice == 2) {
+        /* TODO: Add registerUser() */
+        printf("\n[Register module - coming soon]");
+        getch();
+    } else if (choice == 3) {
+        /* TODO: Add saveDataToFile() before exit */
+        printf("Thanks for playing!\n");
+        exit(0);
+    } else {
+        printf("Invalid choice!\n");
+        getch();
     }
+    
+    /* Loop back to menu */
+    mainMenu();
 }
 
-void registerUser()
-{
-    printf("Register system\n");
-}
+/* ==========================================
+   MAIN FUNCTION
+   ========================================== */
 
-void loginUser()
-{
-    printf("Login system\n");
+int main(void) {
+    mainMenu();
+    return 0;
 }
-
