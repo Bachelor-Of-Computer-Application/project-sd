@@ -3,12 +3,12 @@
     Part 1: Main Menu Only + login + register + Gameplay
 */
 
-#include <iostream>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <cctype>
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <string.h>
+#include <time.h>
+#include <ctype.h>
 
 // ----------CONFIGURATION-----------
 #define MAX_USERS 100
