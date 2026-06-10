@@ -257,7 +257,142 @@ void playSinglePlayer(void) {
 // ==========================================
 
 
+void playMultiplayer(void) {
+    char opponent[MAX_NAME_LEN];
+    int playerChoice, player2Choice;
+    char *choices[] = {"Rock", "Paper", "Scissors"};
+    int opponentIdx;
 
+    clearScreen();
+    printf("=================================\n");
+    printf("       MULTIPLAYER MODE\n");
+    printf("=================================\n");
+    printf("Enter opponent username: ");
+    scanf("%s", opponent);
+    getchar();
+
+    opponentIdx = findUser(opponent);
+
+    if (opponentIdx == -1) {
+        printf("\nERROR: Opponent not found!\n");
+        getch();
+        return;
+    }
+
+    if (opponentIdx == currentUserIndex) {
+        printf("\nERROR: Cannot play against yourself!\n");
+        getch();
+        return;
+    }
+
+    clearScreen();
+    printf("=================================\n");
+    printf("   %s's TURN\n", users[currentUserIndex].username);
+    printf("=================================\n");
+    printf("1. Rock\n2. Paper\n3. Scissors\n");
+    printf("Enter your choice (1-3): ");
+    scanf("%d", &playerChoice);
+    getchar();
+
+    if (playerChoice < 1 || playerChoice > 3) {
+        playerChoice = (rand() % 3) + 1;
+    }
+
+    clearScreen();
+    printf("=================================\n");
+    printf("   %s's TURN\n", opponent);
+    printf("=================================\n");
+    printf("1. Rock\n2. Paper\n3. Scissors\n");
+    printf("Enter choice (1-3): ");
+    scanf("%d", &player2Choice);
+    getchar();
+
+    if (player2Choice < 1 || player2Choice > 3) {
+        player2Choice = (rand() % 3) + 1;
+    }
+
+    clearScreen();
+    printf("=================================\n");
+    printf("          RESULTS\n");
+    printf("=================================\n");
+    printf("%s chose:     %s\n", users[currentUserIndex].username, choices[playerChoice - 1]);
+    printf("%s chose:    %s\n", opponent, choices[player2Choice - 1]);
+
+    int result = 0;
+
+    if (playerChoice == player2Choice) {
+        printf("\n>>> IT'S A DRAW! <<<\n");
+        result = 0;
+    } else if ((playerChoice == 1 && player2Choice == 3) ||
+               (playerChoice == 2 && player2Choice == 1) ||
+               (playerChoice == 3 && player2Choice == 2)) {
+        printf("\n>>> %s WINS! <<<\n", users[currentUserIndex].username);
+        result = 1;
+    } else {
+        printf("\n>>> %s WINS! <<<\n", opponent);
+        result = -1;
+    }
+
+    if (result == 1) {
+        users[currentUserIndex].wins++;
+        users[opponentIdx].losses++;
+    } else if (result == -1) {
+        users[currentUserIndex].losses++;
+        users[opponentIdx].wins++;
+    } else {
+        users[currentUserIndex].draws++;
+        users[opponentIdx].draws++;
+    }
+
+    char logEntry1[100], logEntry2[100];
+    sprintf(logEntry1, "Dual: %s vs %s [%c]", 
+            choices[playerChoice - 1], choices[player2Choice - 1],
+            result == 1 ? 'W' : (result == -1 ? 'L' : 'D'));
+    sprintf(logEntry2, "Dual: %s vs %s [%c]", 
+            choices[player2Choice - 1], choices[playerChoice - 1],
+            result == -1 ? 'W' : (result == 1 ? 'L' : 'D'));
+
+    addHistory(currentUserIndex, logEntry1);
+    addHistory(opponentIdx, logEntry2);
+    saveData();
+
+    printf("\nPress any key to continue...");
+    getch();
+}
+
+// ==========================================
+// GAME DASHBOARD
+// ==========================================
+
+void gameDashboard(void) {
+    int choice;
+
+    while (1) {
+        clearScreen();
+        printf("=================================\n");
+        printf("        GAME DASHBOARD\n");
+        printf("=================================\n");
+        printf("1. Single Player (vs Computer)\n");
+        printf("2. Multiplayer (vs Another User)\n");
+        printf("3. Back to Main Menu\n");
+        printf("=================================\n");
+        printf("Enter choice: ");
+
+        scanf("%d", &choice);
+        getchar();
+
+        if (choice == 1) {
+            playSinglePlayer();
+        } else if (choice == 2) {
+            playMultiplayer();
+        } else if (choice == 3) {
+            break;
+        } else {
+            printf("Invalid choice!\n");
+            getch();
+        }
+    }
+}
 
 
 
@@ -305,18 +440,17 @@ void mainMenu(void) {
             }
         } else {
             if (choice == 1) {
-                printf("\n[Game module - coming soon]");
-                getchar();
+            gameDashboard();  // NOW CALLS GAME DASHBOARD
             } else if (choice == 2) {
                 currentUserIndex = -1;
                 printf("Logged out!\n");
-                getchar();
+                getch();
             } else if (choice == 3) {
                 printf("Thanks for playing!\n");
                 break;
             } else {
                 printf("Invalid choice!\n");
-                getchar();
+                getch();
             }
         }
     }
