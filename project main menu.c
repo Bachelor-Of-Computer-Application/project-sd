@@ -1,3 +1,5 @@
+
+
  /*
     ROCK PAPER SCISSORS - SEMESTER PROJECT
     Part 1: Main Menu Only + login + register + Gameplay
@@ -35,7 +37,7 @@ int currentUserIndex = -1;
 /* ==========================================
    FUNCTION PROTOTYPES
    ========================================== */
-
+void loadData(void);
 void clearScreen(void);
 void mainMenu(void);
 void login(void);
@@ -455,12 +457,27 @@ void mainMenu(void) {
         }
     }
 }
-
-/* ==========================================
-   MAIN FUNCTION
-   ========================================== */
+// ==========================================
+// MAIN FUNCTION
+// ==========================================
 
 int main(void) {
+    loadData();
     mainMenu();
     return 0;
 }
+void loadData(void);
+// ==========================================
+// LOAD DATA FROM FILE
+// ==========================================
+
+void loadData(void) {
+    FILE *fp;
+    fp = fopen(FILE_NAME, "rb");
+    if (fp != NULL) {
+        fread(&userCount, sizeof(int), 1, fp);
+        fread(users, sizeof(User), userCount, fp);
+        fclose(fp);
+    }
+}
+
