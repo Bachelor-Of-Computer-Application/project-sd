@@ -1,23 +1,21 @@
- /*
+/*
     ROCK PAPER SCISSORS - SEMESTER PROJECT
-    Part 1: Main Menu Only + login + register + Gameplay
+    Full Version: Menu + Login + Register + Game Module
 */
 
-#include <iostream>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <cctype>
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <string.h>
+#include <time.h>
+#include <ctype.h>
 
-// ----------CONFIGURATION-----------
 #define MAX_USERS 100
 #define MAX_NAME_LEN 50
 #define MAX_PASS_LEN 50
 #define MAX_HISTORY_LEN 200
 #define FILE_NAME "game_rock.dat"
 
-// -------------------- DATA STRUCTURES --------------------
 typedef struct {
     char username[MAX_NAME_LEN];
     char password[MAX_PASS_LEN];
@@ -26,15 +24,10 @@ typedef struct {
     int draws;
     char history[MAX_HISTORY_LEN];
 } User;
-//------------------GLOBAL VARIABLE-------------
+
 User users[MAX_USERS];
 int userCount = 0;
 int currentUserIndex = -1;
-
-
-/* ==========================================
-   FUNCTION PROTOTYPES
-   ========================================== */
 
 void clearScreen(void);
 void mainMenu(void);
@@ -47,29 +40,27 @@ void gameDashboard(void);
 void playSinglePlayer(void);
 void playMultiplayer(void);
 
-// ==========================================
-// HELPER FUNCTIONS
-// ==========================================
-
 int findUser(char *username) {
-	int i;
+    int i;
     for (i = 0; i < userCount; i++) {
         if (strcmp(users[i].username, username) == 0) {
             return i;
         }
     }
     return -1;
-    
 }
+
 void clearScreen(void) {
     system("cls");
 }
+
 void addHistory(int idx, char *result) {
     char temp[MAX_HISTORY_LEN + 100];
     sprintf(temp, "%s | %s", result, users[idx].history);
     strncpy(users[idx].history, temp, MAX_HISTORY_LEN - 1);
     users[idx].history[MAX_HISTORY_LEN - 1] = '\0';
 }
+
 void saveData(void) {
     FILE *fp;
     fp = fopen(FILE_NAME, "wb");
@@ -79,16 +70,6 @@ void saveData(void) {
         fclose(fp);
     }
 }
-
-
-
-
-
-
-
-// ==========================================
-// REGISTER FUNCTION
-// ==========================================
 
 void registerUser(void) {
     char newUser[MAX_NAME_LEN];
@@ -100,14 +81,13 @@ void registerUser(void) {
     printf("=================================\n");
     printf("         REGISTER\n");
     printf("=================================\n");
-    
     printf("Username: ");
     scanf("%s", newUser);
     getchar();
 
     if (findUser(newUser) != -1) {
         printf("\nERROR: Username already exists!\n");
-        getchar();
+        getch();
         return;
     }
 
@@ -121,7 +101,7 @@ void registerUser(void) {
 
     if (strcmp(newPass, confirmPass) != 0) {
         printf("\nERROR: Passwords do not match!\n");
-        getchar();
+        getch();
         return;
     }
 
@@ -131,8 +111,7 @@ void registerUser(void) {
     users[userCount].losses = 0;
     users[userCount].draws = 0;
     strcpy(users[userCount].history, "New User");
-    
-userCount++;
+    userCount++;
     
     fp = fopen(FILE_NAME, "wb");
     if (fp != NULL) {
@@ -141,11 +120,8 @@ userCount++;
         fclose(fp);
     }
     printf("\n>> Registration Successful!\n");
-    getchar();
+    getch();
 }
-// ==========================================
-// LOGIN FUNCTION
-// ==========================================
 
 void login(void) {
     char inputUser[MAX_NAME_LEN];
@@ -157,7 +133,6 @@ void login(void) {
     printf("=================================\n");
     printf("Username: ");
     scanf("%s", inputUser);
-    
     printf("Password: ");
     scanf("%s", inputPass);
     getchar();
@@ -166,39 +141,32 @@ void login(void) {
 
     if (idx == -1) {
         printf("\nERROR: Username not found!\n");
-        getchar();
+        getch();
         return;
     }
 
     if (strcmp(users[idx].password, inputPass) != 0) {
         printf("\nERROR: Incorrect password!\n");
-        getchar();
+        getch();
         return;
     }
 
     currentUserIndex = idx;
     printf("\n>> LOGIN SUCCESSFUL! Welcome, %s!\n", users[idx].username);
-    getchar();
+    getch();
 }
-
-// ==========================================
-//SINGLE PLAYER GAME
-//===========================================
 
 void playSinglePlayer(void) {
     int playerChoice, compChoice;
-   char *choices[] = {"Rock", "Paper", "Scissors"};
-    
- 
+    char *choices[] = {"Rock", "Paper", "Scissors"};
+
     srand(time(NULL));
 
     clearScreen();
     printf("=================================\n");
     printf("       SINGLE PLAYER MODE\n");
     printf("=================================\n");
-    printf("1. Rock\n");
-    printf("2. Paper\n");
-    printf("3. Scissors\n");
+    printf("1. Rock\n2. Paper\n3. Scissors\n");
     printf("=================================\n");
     printf("Enter your choice (1-3): ");
 
@@ -207,7 +175,7 @@ void playSinglePlayer(void) {
 
     if (playerChoice < 1 || playerChoice > 3) {
         printf("\nInvalid choice! Turn forfeited.\n");
-        getchar();
+        getch();
         return;
     }
 
@@ -249,84 +217,95 @@ void playSinglePlayer(void) {
     saveData();
 
     printf("\nPress any key to continue...");
+    getch();
+}
+
+void playMultiplayer(void) {
+    char opponent[MAX_NAME_LEN];
+    int playerChoice, player2Choice;
+    char *choices[] = {"Rock", "Paper", "Scissors"};
+    int opponentIdx;
+
+    clearScreen();
+    printf("=================================\n");
+    printf("       MULTIPLAYER MODE\n");
+    printf("=================================\n");
+    printf("Enter opponent username: ");
+    scanf("%s", opponent);
     getchar();
-}
 
-// ==========================================
-// MULTIPLAYER GAME
-// ==========================================
+    opponentIdx = findUser(opponent);
 
-
-
-
-
-
-/* ==========================================
-   MAIN MENU
-   ========================================== */
-   
-
-void mainMenu(void) {
-    int choice;
-    
-    while (1) {
-        clearScreen();
-        printf("=================================\n");
-        printf("   ROCK PAPER SCISSORS - MAIN MENU\n");
-        printf("=================================\n");
-        
-        if (currentUserIndex == -1) {
-            printf("1. Login\n");
-            printf("2. Register\n");
-            printf("3. Exit\n");
-        } else {
-            printf("Logged in as: %s\n", users[currentUserIndex].username);
-            printf("1. Play Game\n");
-            printf("2. Logout\n");
-            printf("3. Exit\n");
-        }
-        printf("=================================\n");
-        printf("Enter choice: ");
-
-        scanf("%d", &choice);
-        getchar();
-
-        if (currentUserIndex == -1) {
-            if (choice == 1) {
-                login();
-            } else if (choice == 2) {
-                registerUser();
-            } else if (choice == 3) {
-                printf("Thanks for playing!\n");
-                break;
-            } else {
-                printf("Invalid choice!\n");
-                getchar();
-            }
-        } else {
-            if (choice == 1) {
-                printf("\n[Game module - coming soon]");
-                getchar();
-            } else if (choice == 2) {
-                currentUserIndex = -1;
-                printf("Logged out!\n");
-                getchar();
-            } else if (choice == 3) {
-                printf("Thanks for playing!\n");
-                break;
-            } else {
-                printf("Invalid choice!\n");
-                getchar();
-            }
-        }
+    if (opponentIdx == -1) {
+        printf("\nERROR: Opponent not found!\n");
+        getch();
+        return;
     }
-}
 
-/* ==========================================
-   MAIN FUNCTION
-   ========================================== */
+    if (opponentIdx == currentUserIndex) {
+        printf("\nERROR: Cannot play against yourself!\n");
+        getch();
+        return;
+    }
 
-int main(void) {
-    mainMenu();
-    return 0;
-}
+    clearScreen();
+    printf("=================================\n");
+    printf("   %s's TURN\n", users[currentUserIndex].username);
+    printf("=================================\n");
+    printf("1. Rock\n2. Paper\n3. Scissors\n");
+    printf("Enter your choice (1-3): ");
+    scanf("%d", &playerChoice);
+    getchar();
+
+    if (playerChoice < 1 || playerChoice > 3) {
+        playerChoice = (rand() % 3) + 1;
+    }
+
+    clearScreen();
+    printf("=================================\n");
+    printf("   %s's TURN\n", opponent);
+    printf("=================================\n");
+    printf("1. Rock\n2. Paper\n3. Scissors\n");
+    printf("Enter choice (1-3): ");
+    scanf("%d", &player2Choice);
+    getchar();
+
+    if (player2Choice < 1 || player2Choice > 3) {
+        player2Choice = (rand() % 3) + 1;
+    }
+
+    clearScreen();
+    printf("=================================\n");
+    printf("          RESULTS\n");
+    printf("=================================\n");
+    printf("%s chose:     %s\n", users[currentUserIndex].username, choices[playerChoice - 1]);
+    printf("%s chose:    %s\n", opponent, choices[player2Choice - 1]);
+
+    int result = 0;
+
+    if (playerChoice == player2Choice) {
+        printf("\n>>> IT'S A DRAW! <<<\n");
+        result = 0;
+    } else if ((playerChoice == 1 && player2Choice == 3) ||
+               (playerChoice == 2 && player2Choice == 1) ||
+               (playerChoice == 3 && player2Choice == 2)) {
+        printf("\n>>> %s WINS! <<<\n", users[currentUserIndex].username);
+        result = 1;
+    } else {
+        printf("\n>>> %s WINS! <<<\n", opponent);
+        result = -1;
+    }
+
+    if (result == 1) {
+        users[currentUserIndex].wins++;
+        users[opponentIdx].losses++;
+    } else if (result == -1) {
+        users[currentUserIndex].losses++;
+        users[opponentIdx].wins++;
+    } else {
+        users[currentUserIndex].draws++;
+        users[opponentIdx].draws++;
+    }
+
+    char logEntry1[100], logEntry2[100];
+    sprintf (logEntry);
