@@ -466,12 +466,8 @@ int main(void) {
     mainMenu();
     return 0;
 }
-void loadData(void);
-// ==========================================
-// LOAD DATA FROM FILE
-// ==========================================
 
-void loadData(void) {
+
     FILE *fp;
     fp = fopen(FILE_NAME, "rb");
     if (fp != NULL) {
@@ -479,5 +475,69 @@ void loadData(void) {
         fread(users, sizeof(User), userCount, fp);
         fclose(fp);
     }
+void updateProfile(void) {
+    char newPass[MAX_PASS_LEN], confirmPass[MAX_PASS_LEN];
+    printf("Enter new password: ");
+    scanf("%s", newPass);
+    printf("Confirm password: ");
+    scanf("%s", confirmPass);
+    
+    if (strcmp(newPass, confirmPass) == 0) {
+        strcpy(users[currentUserIndex].password, newPass);
+        saveData();
+        printf("\n>> Password changed!\n");
+    } else {
+        printf("\n>> Passwords don't match!\n");
+    }
+    getch();
+}void deleteAccount(void) {
+    char confirm, inputPass[MAX_PASS_LEN];
+    printf("Enter password to confirm: ");
+    scanf("%s", inputPass);
+    
+    if (strcmp(users[currentUserIndex].password, inputPass) != 0) {
+        printf("\n>> Wrong password!\n");
+        getch();
+        return;
+    }
+    
+    printf("Delete account? (y/n): ");
+    scanf("%c", &confirm);
+    
+    if (confirm == 'y') {
+        int i;
+        for (i = currentUserIndex; i < userCount - 1; i++) {
+            users[i] = users[i + 1];
+        }
+        userCount--;
+        saveData();
+        printf("\n>> Deleted!\n");
+        exit(0);
+    }
+}void viewHistory(void) {
+    printf("\nUsername: %s\n", users[currentUserIndex].username);
+    printf("Wins: %d | Losses: %d | Draws: %d\n",
+           users[currentUserIndex].wins,
+           users[currentUserIndex].losses,
+           users[currentUserIndex].draws);
+    printf("History: %s\n", users[currentUserIndex].history);
+    getch();
 }
-
+void viewLeaderboard(void) {
+    User temp;
+    int i, j;
+    for (i = 0; i < userCount; i++) {
+        for (j = 0; j < userCount - 1; j++) {
+            if (users[j].wins < users[j+1].wins) {
+                temp = users[j];
+                users[j] = users[j+1];
+                users[j+1] = temp;
+            }
+        }
+    }
+    printf("\n%-20s %5s\n", "Name", "Wins");
+    for (i = 0; i < userCount; i++) {
+        printf("%-20s %5d\n", users[i].username, users[i].wins);
+    }
+    getch();
+}
