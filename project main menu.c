@@ -44,6 +44,7 @@ void login(void);
 void registerUser(void);
 int findUser(char *username);
 void addHistory(int idx, char *result);
+void viewLeaderboard(void);
 void saveData(void);
 void gameDashboard(void);
 void playSinglePlayer(void);
@@ -461,20 +462,24 @@ void mainMenu(void) {
 // MAIN FUNCTION
 // ==========================================
 
-int main(void) {
-    loadData();
-    mainMenu();
-    return 0;
-}
 
 
+void loadData(void) {
     FILE *fp;
+
     fp = fopen(FILE_NAME, "rb");
     if (fp != NULL) {
         fread(&userCount, sizeof(int), 1, fp);
         fread(users, sizeof(User), userCount, fp);
         fclose(fp);
     }
+}
+
+int main(void) {
+    loadData();
+    mainMenu();
+    return 0;
+}
 void updateProfile(void) {
     char newPass[MAX_PASS_LEN], confirmPass[MAX_PASS_LEN];
     printf("Enter new password: ");
@@ -502,7 +507,7 @@ void updateProfile(void) {
     }
     
     printf("Delete account? (y/n): ");
-    scanf("%c", &confirm);
+    scanf(" %c", &confirm);
     
     if (confirm == 'y') {
         int i;
