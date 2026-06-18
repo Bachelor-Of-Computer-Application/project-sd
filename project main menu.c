@@ -2,7 +2,7 @@
 
  /*
     ROCK PAPER SCISSORS - SEMESTER PROJECT
-    Part 1: Main Menu Only + login + register + Gameplay
+    Part 1: Main Menu Only + login + register + Gameplay + file handling 
 */
 
 #include <stdio.h>
