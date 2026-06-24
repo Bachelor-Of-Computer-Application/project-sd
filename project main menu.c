@@ -1,17 +1,13 @@
-
-
- /*
+/*
     ROCK PAPER SCISSORS - SEMESTER PROJECT
-    Part 1: Main Menu Only + login + register + Gameplay
+    Part 1: Main Menu Only + login + register + Gameplay+
 */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
-
 // ----------CONFIGURATION-----------
 #define MAX_USERS 100
 #define MAX_NAME_LEN 50
@@ -32,8 +28,6 @@ typedef struct {
 User users[MAX_USERS];
 int userCount = 0;
 int currentUserIndex = -1;
-
-
 /* ==========================================
    FUNCTION PROTOTYPES
    ========================================== */
@@ -45,10 +39,17 @@ void registerUser(void);
 int findUser(char *username);
 void addHistory(int idx, char *result);
 void saveData(void);
+
 void gameDashboard(void);
 void playSinglePlayer(void);
 void playMultiplayer(void);
 
+void profileMenu(void);
+void updateProfile(void);
+void deleteAccount(void);
+void viewHistory(void);
+void viewLeaderboard(void);
+int readInt(void);
 // ==========================================
 // HELPER FUNCTIONS
 // ==========================================
@@ -81,13 +82,6 @@ void saveData(void) {
         fclose(fp);
     }
 }
-
-
-
-
-
-
-
 // ==========================================
 // REGISTER FUNCTION
 // ==========================================
@@ -104,7 +98,7 @@ void registerUser(void) {
     printf("=================================\n");
     
     printf("Username: ");
-    scanf("%s", newUser);
+    scanf("%49s", newUser);
     getchar();
 
     if (findUser(newUser) != -1) {
@@ -114,11 +108,11 @@ void registerUser(void) {
     }
 
     printf("Password: ");
-    scanf("%s", newPass);
+    scanf("%49s", newPass);
     getchar();
 
     printf("Confirm Password: ");
-    scanf("%s", confirmPass);
+    scanf("%49s", confirmPass);
     getchar();
 
     if (strcmp(newPass, confirmPass) != 0) {
@@ -158,10 +152,10 @@ void login(void) {
     printf("           LOGIN\n");
     printf("=================================\n");
     printf("Username: ");
-    scanf("%s", inputUser);
+    scanf("%49s", inputUser);
     
     printf("Password: ");
-    scanf("%s", inputPass);
+    scanf("%49s", inputPass);
     getchar();
 
     int idx = findUser(inputUser);
@@ -202,17 +196,14 @@ void playSinglePlayer(void) {
     printf("2. Paper\n");
     printf("3. Scissors\n");
     printf("=================================\n");
+    
     printf("Enter your choice (1-3): ");
-
-    scanf("%d", &playerChoice);
-    getchar();
-
+playerChoice = readInt();
     if (playerChoice < 1 || playerChoice > 3) {
         printf("\nInvalid choice! Turn forfeited.\n");
         getchar();
         return;
     }
-
     compChoice = (rand() % 3) + 1;
 
     printf("\nYOU chose:     %s\n", choices[playerChoice - 1]);
@@ -257,9 +248,8 @@ void playSinglePlayer(void) {
 // ==========================================
 // MULTIPLAYER GAME
 // ==========================================
-
-
-void playMultiplayer(void) {
+void playMultiplayer(void)
+{
     char opponent[MAX_NAME_LEN];
     int playerChoice, player2Choice;
     char *choices[] = {"Rock", "Paper", "Scissors"};
@@ -270,7 +260,7 @@ void playMultiplayer(void) {
     printf("       MULTIPLAYER MODE\n");
     printf("=================================\n");
     printf("Enter opponent username: ");
-    scanf("%s", opponent);
+    scanf("%49s", opponent);
     getchar();
 
     opponentIdx = findUser(opponent);
@@ -293,26 +283,20 @@ void playMultiplayer(void) {
     printf("=================================\n");
     printf("1. Rock\n2. Paper\n3. Scissors\n");
     printf("Enter your choice (1-3): ");
-    scanf("%d", &playerChoice);
-    getchar();
-
+  playerChoice = readInt();
     if (playerChoice < 1 || playerChoice > 3) {
         playerChoice = (rand() % 3) + 1;
     }
-
     clearScreen();
     printf("=================================\n");
     printf("   %s's TURN\n", opponent);
     printf("=================================\n");
     printf("1. Rock\n2. Paper\n3. Scissors\n");
     printf("Enter choice (1-3): ");
-    scanf("%d", &player2Choice);
-    getchar();
-
+  playerChoice = readInt();
     if (player2Choice < 1 || player2Choice > 3) {
         player2Choice = (rand() % 3) + 1;
     }
-
     clearScreen();
     printf("=================================\n");
     printf("          RESULTS\n");
@@ -362,13 +346,11 @@ void playMultiplayer(void) {
     getch();
 }
 
-// ==========================================
-// GAME DASHBOARD
-// ==========================================
-
+/* ==========================================
+   GAME DASHBOARD
+   ========================================== */
 void gameDashboard(void) {
     int choice;
-
     while (1) {
         clearScreen();
         printf("=================================\n");
@@ -379,10 +361,7 @@ void gameDashboard(void) {
         printf("3. Back to Main Menu\n");
         printf("=================================\n");
         printf("Enter choice: ");
-
-        scanf("%d", &choice);
-        getchar();
-
+        choice = readInt();
         if (choice == 1) {
             playSinglePlayer();
         } else if (choice == 2) {
@@ -395,15 +374,69 @@ void gameDashboard(void) {
         }
     }
 }
-
-
-
 /* ==========================================
    MAIN MENU
    ========================================== */
-   
+void profileMenu(void)
+{
+    int choice;
 
-void mainMenu(void) {
+    while(1)
+    {
+        clearScreen();
+
+        printf("=================================\n");
+        printf("        PROFILE MENU\n");
+        printf("=================================\n");
+        printf("1. View Stats\n");
+        printf("2. View History\n");
+        printf("3. View Leaderboard\n");
+        printf("4. Update Password\n");
+        printf("5. Delete Account\n");
+        printf("6. Back\n");
+        printf("=================================\n");
+        printf("Enter choice: ");
+
+        choice = readInt();
+
+        switch(choice)
+        {
+            case 1:
+                clearScreen();
+                printf("Username: %s\n", users[currentUserIndex].username);
+                printf("Wins: %d\n", users[currentUserIndex].wins);
+                printf("Losses: %d\n", users[currentUserIndex].losses);
+                printf("Draws: %d\n", users[currentUserIndex].draws);
+                getch();
+                break;
+
+            case 2:
+                viewHistory();
+                break;
+
+            case 3:
+                viewLeaderboard();
+                break;
+
+            case 4:
+                updateProfile();
+                break;
+
+            case 5:
+                deleteAccount();
+                break;
+
+            case 6:
+                return;
+
+            default:
+                printf("Invalid choice!\n");
+                getch();
+        }
+    }
+}
+void mainMenu(void)
+ {
     int choice;
     
     while (1) {
@@ -418,16 +451,14 @@ void mainMenu(void) {
             printf("3. Exit\n");
         } else {
             printf("Logged in as: %s\n", users[currentUserIndex].username);
-            printf("1. Play Game\n");
-            printf("2. Logout\n");
-            printf("3. Exit\n");
+           printf("1. Play Game\n");
+printf("2. Profile & Stats\n");
+printf("3. Logout\n");
+printf("4. Exit\n");
         }
         printf("=================================\n");
         printf("Enter choice: ");
-
-        scanf("%d", &choice);
-        getchar();
-
+        choice = readInt();
         if (currentUserIndex == -1) {
             if (choice == 1) {
                 login();
@@ -440,21 +471,32 @@ void mainMenu(void) {
                 printf("Invalid choice!\n");
                 getchar();
             }
-        } else {
-            if (choice == 1) {
-            gameDashboard();  // NOW CALLS GAME DASHBOARD
-            } else if (choice == 2) {
-                currentUserIndex = -1;
-                printf("Logged out!\n");
-                getch();
-            } else if (choice == 3) {
-                printf("Thanks for playing!\n");
-                break;
-            } else {
-                printf("Invalid choice!\n");
-                getch();
-            }
         }
+        
+         else
+{
+    if (choice == 1)
+    {
+        gameDashboard();
+    }
+    else if (choice == 2)
+    {
+        profileMenu();
+    }
+    else if (choice == 3)
+    {
+        currentUserIndex = -1;
+    }
+    else if (choice == 4)
+    {
+        break;
+    }
+    else
+    {
+        printf("Invalid choice!\n");
+        getch();
+    }
+}
     }
 }
 // ==========================================
@@ -466,15 +508,32 @@ int main(void) {
     mainMenu();
     return 0;
 }
+int readInt(void)
+{
+    char line[100];
+    int value;
 
+    if(fgets(line,sizeof(line),stdin)==NULL)
+        return -1;
 
+    if(sscanf(line,"%d",&value)!=1)
+        return -1;
+
+    return value;
+}
+void loadData(void)
+{
     FILE *fp;
+
     fp = fopen(FILE_NAME, "rb");
-    if (fp != NULL) {
-        fread(&userCount, sizeof(int), 1, fp);
-        fread(users, sizeof(User), userCount, fp);
+
+    if(fp != NULL)
+    {
+        fread(&userCount,sizeof(int),1,fp);
+        fread(users,sizeof(User),userCount,fp);
         fclose(fp);
     }
+}
 void updateProfile(void) {
     char newPass[MAX_PASS_LEN], confirmPass[MAX_PASS_LEN];
     printf("Enter new password: ");
@@ -502,8 +561,7 @@ void updateProfile(void) {
     }
     
     printf("Delete account? (y/n): ");
-    scanf("%c", &confirm);
-    
+    scanf(" %c",&confirm);
     if (confirm == 'y') {
         int i;
         for (i = currentUserIndex; i < userCount - 1; i++) {
@@ -523,21 +581,45 @@ void updateProfile(void) {
     printf("History: %s\n", users[currentUserIndex].history);
     getch();
 }
-void viewLeaderboard(void) {
-    User temp;
-    int i, j;
-    for (i = 0; i < userCount; i++) {
-        for (j = 0; j < userCount - 1; j++) {
-            if (users[j].wins < users[j+1].wins) {
-                temp = users[j];
-                users[j] = users[j+1];
-                users[j+1] = temp;
+void viewLeaderboard(void)
+{
+    User sorted[MAX_USERS];
+    User swap;
+    int i,j;
+
+    for(i=0;i<userCount;i++)
+        sorted[i]=users[i];
+
+    for(i=0;i<userCount-1;i++)
+    {
+        for(j=0;j<userCount-1-i;j++)
+        {
+            if(sorted[j].wins < sorted[j+1].wins)
+            {
+                swap=sorted[j];
+                sorted[j]=sorted[j+1];
+                sorted[j+1]=swap;
             }
         }
     }
-    printf("\n%-20s %5s\n", "Name", "Wins");
-    for (i = 0; i < userCount; i++) {
-        printf("%-20s %5d\n", users[i].username, users[i].wins);
+
+    clearScreen();
+
+    printf("=================================\n");
+    printf("          LEADERBOARD\n");
+    printf("=================================\n");
+
+    printf("%-20s %6s %6s %6s\n",
+           "Name","Wins","Loss","Draw");
+
+    for(i=0;i<userCount;i++)
+    {
+        printf("%-20s %6d %6d %6d\n",
+               sorted[i].username,
+               sorted[i].wins,
+               sorted[i].losses,
+               sorted[i].draws);
     }
+
     getch();
 }
