@@ -1,6 +1,10 @@
 /*
     ROCK PAPER SCISSORS - SEMESTER PROJECT
+<<<<<<< HEAD
     Part 1: Main Menu Only + login + register + Gameplay+
+=======
+    Part 1: Main Menu Only + login + register + Gameplay + file handling 
+>>>>>>> 7122376c351769851f333ce5e4d36b05dec8150e
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,6 +42,7 @@ void login(void);
 void registerUser(void);
 int findUser(char *username);
 void addHistory(int idx, char *result);
+void viewLeaderboard(void);
 void saveData(void);
 
 void gameDashboard(void);
@@ -503,6 +508,7 @@ printf("4. Exit\n");
 // MAIN FUNCTION
 // ==========================================
 
+<<<<<<< HEAD
 int main(void) {
     loadData();
     mainMenu();
@@ -512,10 +518,13 @@ int readInt(void)
 {
     char line[100];
     int value;
+=======
+>>>>>>> 7122376c351769851f333ce5e4d36b05dec8150e
 
     if(fgets(line,sizeof(line),stdin)==NULL)
         return -1;
 
+<<<<<<< HEAD
     if(sscanf(line,"%d",&value)!=1)
         return -1;
 
@@ -523,6 +532,9 @@ int readInt(void)
 }
 void loadData(void)
 {
+=======
+void loadData(void) {
+>>>>>>> 7122376c351769851f333ce5e4d36b05dec8150e
     FILE *fp;
 
     fp = fopen(FILE_NAME, "rb");
@@ -534,6 +546,15 @@ void loadData(void)
         fclose(fp);
     }
 }
+<<<<<<< HEAD
+=======
+
+int main(void) {
+    loadData();
+    mainMenu();
+    return 0;
+}
+>>>>>>> 7122376c351769851f333ce5e4d36b05dec8150e
 void updateProfile(void) {
     char newPass[MAX_PASS_LEN], confirmPass[MAX_PASS_LEN];
     printf("Enter new password: ");
@@ -561,7 +582,12 @@ void updateProfile(void) {
     }
     
     printf("Delete account? (y/n): ");
+<<<<<<< HEAD
     scanf(" %c",&confirm);
+=======
+    scanf(" %c", &confirm);
+    
+>>>>>>> 7122376c351769851f333ce5e4d36b05dec8150e
     if (confirm == 'y') {
         int i;
         for (i = currentUserIndex; i < userCount - 1; i++) {
