@@ -1,0 +1,8 @@
+=====================================
+Player   : divs
+Result   : Solo: Scissors vs Paper [W]
+Wins     : 1
+Losses   : 0
+Draws    : 0
+=====================================
+
