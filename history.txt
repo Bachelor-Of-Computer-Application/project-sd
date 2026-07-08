@@ -14,3 +14,19 @@ Losses   : 0
 Draws    : 0
 =====================================
 
+=====================================
+Player   : sad
+Result   : Solo: Paper vs Rock [W]
+Wins     : 1
+Losses   : 0
+Draws    : 0
+=====================================
+
+=====================================
+Player   : malika22
+Result   : Solo: Scissors vs Paper [W]
+Wins     : 1
+Losses   : 0
+Draws    : 0
+=====================================
+
