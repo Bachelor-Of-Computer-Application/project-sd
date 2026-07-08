@@ -10,7 +10,7 @@
 #define MAX_NAME_LEN 50
 #define MAX_PASS_LEN 50
 #define MAX_HISTORY_LEN 200
-#define FILE_NAME "game_rock.dat"
+#define FILE_NAME "game_rock.txt"
 #define HISTORY_FILE "history.txt"
 // -------------------- DATA STRUCTURES --------------------
 typedef struct {
