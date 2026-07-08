@@ -30,3 +30,27 @@ Losses   : 0
 Draws    : 0
 =====================================
 
+=====================================
+Player   : sab
+Result   : Solo: Paper vs Rock [W]
+Wins     : 1
+Losses   : 0
+Draws    : 0
+=====================================
+
+=====================================
+Player   : ded
+Result   : Dual: Paper vs Scissors [L]
+Wins     : 0
+Losses   : 1
+Draws    : 0
+=====================================
+
+=====================================
+Player   : sab
+Result   : Dual: Scissors vs Paper [W]
+Wins     : 2
+Losses   : 0
+Draws    : 0
+=====================================
+
