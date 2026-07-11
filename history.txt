@@ -54,3 +54,35 @@ Losses   : 0
 Draws    : 0
 =====================================
 
+=====================================
+Player   : as
+Result   : Dual: Paper vs Scissors [L]
+Wins     : 0
+Losses   : 1
+Draws    : 0
+=====================================
+
+=====================================
+Player   : sa
+Result   : Dual: Scissors vs Paper [W]
+Wins     : 1
+Losses   : 0
+Draws    : 0
+=====================================
+
+=====================================
+Player   : as
+Result   : Dual: Paper vs Scissors [L]
+Wins     : 0
+Losses   : 2
+Draws    : 0
+=====================================
+
+=====================================
+Player   : sa
+Result   : Dual: Scissors vs Paper [W]
+Wins     : 2
+Losses   : 0
+Draws    : 0
+=====================================
+
