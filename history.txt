@@ -86,3 +86,19 @@ Losses   : 0
 Draws    : 0
 =====================================
 
+=====================================
+Player   : divs
+Result   : Solo: Scissors vs Rock [L]
+Wins     : 0
+Losses   : 1
+Draws    : 0
+=====================================
+
+=====================================
+Player   : divs
+Result   : Solo: Paper vs Paper [D]
+Wins     : 0
+Losses   : 1
+Draws    : 1
+=====================================
+
